@@ -19,7 +19,7 @@ parse.corum = function(organism = "Human"){
 
   #file = system.file("extdata","allComplexes.txt",package = "RoDiCE")
   #cplx = fread(file,data.table=FALSE)
-  data("corum.raw")
+  load("inst/extdata/corum.raw.rda")
   cplx = corum.raw
   cplx = cplx[cplx$Organism == organism,]
   cplx_gene1 = strsplit(cplx$`subunits(Gene name)`,";|,| ")
