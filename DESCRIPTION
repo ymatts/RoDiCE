@@ -1,7 +1,7 @@
 Package: RoDiCE
 Type: Package
 Title: Robust differential co-expression test by copula
-Version: 0.1.0
+Version: 0.99.1
 Author: Yusuke MATSUI
 Maintainer: Yusuke MATSUI <mail.to.matsui@gmail.com>
 Description: Provide a function of empirical copula-based two sample co-expression testing.
