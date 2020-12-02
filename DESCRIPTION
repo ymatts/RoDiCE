@@ -1,0 +1,17 @@
+Package: RoDiCE
+Type: Package
+Title: Robust differential co-expression test by copula
+Version: 0.1.0
+Author: Yusuke MATSUI
+Maintainer: Yusuke MATSUI <matsui@met.nagoya-u.ac.jp>
+Description: Provide a function of empirical copula-based two sample co-expression testing.
+biocViews: Transcriptomics, Protemics, Protein complex, Differential co-expression analysis, Copula
+Depends: R (>= 3.6.0)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: Rcpp (>= 1.0.4.6),RcppParallel,gPdtest,stats,Rfast,ggplot2,visNetwork,GGally
+LinkingTo: Rcpp,RcppParallel
+Suggests: knitr,data.table,readxl
+VignetteBuilder: knitr
+RoxygenNote: 7.1.1
