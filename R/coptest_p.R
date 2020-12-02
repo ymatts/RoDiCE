@@ -105,7 +105,7 @@ coptest.p = function(x1,x2,nperm=100,approx = TRUE,silent = TRUE){
   stats = sapply(result_perm,function(x)x$stat)
   pvals = sapply(result_perm,function(x)x$pval)
   qvals = p.adjust(pvals,method="BH")
-  df = data.frame(varname = names(result_perm),stat = stats,p = pvals, p.adj = qvals,stringsAsFactors = F)
+  df = data.frame(varname = names(result_perm),stat = stats,p = pvals, p.adj = qvals,stringsAsFactors = FALSE)
   rownames(df) = NULL
   output = list(tbl = df, perm.out = result_perm)
 }

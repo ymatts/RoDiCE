@@ -6,22 +6,22 @@ file_1 = system.file("extdata","CPTAC3_Clear_Cell_Renal_Cell_Carcinoma_Proteome.
 
 rawexpr =
   data.table::fread(file_1,
-        header = F,skip=4,drop=1,sep = "\t",data.table = F)
+        header = FALSE,skip=4,drop=1,sep = "\t",data.table = FALSE)
 
 sampleName =
   data.table::fread(file_1,
-        header = F,nrows=1,drop=1,sep = "\t",data.table = F)
+        header = FALSE,nrows=1,drop=1,sep = "\t",data.table = FALSE)
 
 sampleName = unlist(sampleName)
 
 geneName = data.table::fread(file_1,
-                 header = F,skip=4,select=1,data.table = F)
+                 header = FALSE,skip=4,select=1,data.table = FALSE)
 
 geneName = unlist(geneName)
 
-selectCol_1 = grep("Unshared",sampleName,invert = T)
-selectCol_2 = grep("QC",sampleName,invert = T)
-selectCol_3 = grep("^NCI",sampleName,invert = T)
+selectCol_1 = grep("Unshared",sampleName,invert = TRUE)
+selectCol_2 = grep("QC",sampleName,invert = TRUE)
+selectCol_3 = grep("^NCI",sampleName,invert = TRUE)
 selectCol_4 = grep("Log Ratio",sampleName)
 selectCol = intersect(selectCol_1,intersect(selectCol_2,intersect(selectCol_3,selectCol_4)))
 
@@ -30,7 +30,7 @@ sampleName = gsub(" Log Ratio","",sampleName)
 
 file_2 = system.file("extdata","S044_CPTAC_CCRCC_Discovery_Cohort_Specimens_r1_Sept2018.xlsx",package = "RoDiCE")
 sampleSheet = read_excel::read_excel(file_2,
-                         sheet=1,col_names = T)
+                         sheet=1,col_names = TRUE)
 sampleSheet = as.data.frame(sampleSheet)
 
 exprList = list(expr = t(rawexpr[,selectCol]),

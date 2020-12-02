@@ -4,7 +4,7 @@ author: "Yusuke Matsui"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Vignette Tutorial on RoDiCE package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -26,17 +26,22 @@ knitr::opts_chunk$set(
     
   We develop a robust DC framework, called Robust Differential Co-Expression Analysis (RoDiCE), via two-sample randomization tests with empirical copula. The notable advantage of RoDiCE is noise ro-bustness. Our main contributions are as follows: 1) we develop efficient algorithm of robust copula-based statistical DC testing, 2) we overcome computational hurdles of copula-based permutation test by incorporat-ing the extreme value theory, 3) we demonstrate the effective applica-tion of copula to cancer complexome analysis, and 4) we develop a computationally efficient multi-thread implementing as R package. 
   
-```{r,echo=F,message=F,warning=F,out.width="85%"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,out.width="85%"}
 knitr::include_graphics("figure1.jpg")
 ```
 
 
 ## Install
-```{r,message=F,warning=F,eval=F}
+```{r,message=FALSE,warning=FALSE,eval=FALSE}
 install.packages("RoDiCE")
 ```
 
-```{r,message=F,warning=F}
+```{r,message=FALSE,warning=FALSE,eval=FALSE}
+install.packages("RoDiCE")
+```
+
+
+```{r,message=FALSE,warning=FALSE}
 library(RoDiCE)
 ```
 
@@ -46,12 +51,12 @@ The required data are a protein/gene expression data frame and a data frame repr
 The expression data assumes that the column direction represents the protein and the direction represents the sample.  
 
 ### Protein expression data
-```{r,warning=F,message=F}
+```{r,warning=FALSE,message=FALSE}
 data(ccrcc.subset)
 ```
 
 ccrcc.subset contains protein expression data of tumor and normal groups in list.
-```{r,warning=F,message=F}
+```{r,warning=FALSE,message=FALSE}
 names(ccrcc.subset)
 tumor = ccrcc.subset$tumor
 normal = ccrcc.subset$normal
@@ -59,7 +64,7 @@ normal = ccrcc.subset$normal
 
 There were 110 and 84 samples in the tumor and normal groups, respectively, and contained 49 protein expression data.
 
-```{r,warning=F,message=F}
+```{r,warning=FALSE,message=FALSE}
 dim(tumor)
 dim(normal)
 ```
@@ -67,18 +72,19 @@ dim(normal)
 ### Protein complex dataset
 For protein complexes, the data downloaded from CORUM are used. The function `parse_corum()` returns the result of processing the data downloaded from CORUM. The following extracts information of protein complexes for human.
 
-```{r,warning=F,message=F}
+```{r,warning=FALSE,message=FALSE}
 corum = parse.corum("Human")
 names(corum)
 str(corum$comp.tbl)
 ```
 
 In the following steps, the `tbl` element is used.
-```{r,message=F,warning=F}
+```{r,message=FALSE,warning=FALSE}
 head(corum$comp.tbl)
 ```
 Since only proteins derived from five protein complexes were included in the current protein expression data, only the corresponding protein complexes will be extracted.
-```{r}
+
+```{r,message=FALSE,warning=FALSE}
 ref = corum$comp.tbl
 ref = ref[ref$group_id %in% c(6789,5273,6909,149,929),]
 ```
@@ -86,13 +92,13 @@ ref = ref[ref$group_id %in% c(6789,5273,6909,149,929),]
 
 
 ## Construct expression objects by protein complex
-The function `split.exprs()` splits the expression data of all proteins into individual protein complexes.
-```{r,warning=F,message=F}
-tumor_comp = split.exprs(tumor,ref)
-normal_comp = split.exprs(normal,ref)
+The function `group.exprs()` groups the expression data of proteins into individual protein complexes.
+```{r,message=FALSE,warning=FALSE}
+tumor_comp = group.exprs(tumor,ref)
+normal_comp = group.exprs(normal,ref)
 ```
 
-```{r,message=F,warning=F}
+```{r,message=FALSE,warning=FALSE}
 names(tumor_comp)
 names(normal_comp)
 ```
@@ -101,32 +107,32 @@ names(normal_comp)
 
 Protein expression matrices for each complex are stored in `comp.exprs`, and the names and IDs of protein complexes are hidden in `comp.names` and `comp.ids`.
 
-```{r,message=F,warning=F}
+```{r,message=FALSE,warning=FALSE}
 cbind(tumor_comp$comp.names,tumor_comp$comp.ids)
 ```
 
 For example, to access the protein expression data contained in the PBAF complex, we do the following
-```{r,message=F,warning=F}
+```{r,message=FALSE,warning=FALSE}
 head(tumor_comp$comp.exprs[[1]])
 ```
 
 ### Perform two sample copula-based testing
 Based on the expression data of the obtained protein complexes, we will test for differential co-expression between the two groups.`The coptest.p()` function tests the difference in co-expression of each protein pair within a given complex between two groups, x1 and x2. Various n-dependent differences, including linear and non-linear relationships, can be robustly identified against noise.
 
-```{r,message=F,warning=F}
+```{r,message=FALSE,warning=FALSE}
 x1 = tumor_comp$comp.exprs[[1]]
 x2 = normal_comp$comp.exprs[[1]]
 result = coptest.p(x1,x2,nperm = 100,approx = FALSE)
 ```
 
 The result object contains `tbl` and `perm.out`. tbl` is mainly used in order to check the result of a test.
-```{r,warning=F,message=F}
+```{r,message=FALSE,warning=FALSE}
 names(result)
 ```
 
 The tbl is an data.frame object, which contains a `varname` representing a protein pair, a `stat` for the test statistic, `p` for the p-value, and `p.adj` for the multiple test correction.
 
-```{r,message=F,warning=F}
+```{r,message=FALSE,warning=FALSE}
 head(result$tbl)
 ```
 
@@ -137,25 +143,29 @@ Two functions were prepared to interpret the results. One is the `netvis()` func
 
 The following is an example to illustrate the PBAF complex: The object of the PBAF complex (group_id==149).
 
-```{r,warning=F,message=F}
+```{r,message=FALSE,warning=FALSE}
 selectRef = ref[ref$group_id==149,]
 ```
 
 Drawing the differential co-expression network.
-```{r,include=F,warning=F,message=F,fig.align="center",out.height="50%"}
+```{r,eval=FALSE,message=FALSE,warning=FALSE}
 netvis(obj = result,ref = selectRef)
 ```
 
-```{r,echo=F,warning=F,message=F,out.width="80%"}
+```{r,echo=FALSE,message=FALSE,warning=FALSE,out.width="80%"}
 knitr::include_graphics("figure2.jpg")
 ```
 
 The `coexvis()` function illustrates the co-expression pattern with a pair of scattergrams. The arguments are `obj`, `exprs`, and `grp`. `obj` is the result object of the `coptest.p()` function and `exprs` is the protein expression matrix. grp` represents groups to which each sample belongs as integers of 1 and 2.
 
-```{r,message=F,warning=F,out.width="80%",fig.height=8,fig.width=12}
+```{r,eval=FALSE,message=FALSE,warning=FALSE}
 exprs = rbind(x1,x2)
 grp = c(rep(1,nrow(x1)),rep(2,nrow(x2)))
 coexvis(obj = result,exprs = exprs,grp = grp)
+```
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,out.width="80%"}
+knitr::include_graphics("figure3.jpg")
 ```
 
 The lower diagonal component is a pairwise scatter plot at the original scale, and the upper diagonal component is a pairwise scatter plot at the copula-transformed (rank-transformed) scale.RoDiCE identifies the differences of robust and complex co-expressed structures by testing the copula-transformed co-expressed structures between two groups.

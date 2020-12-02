@@ -86,7 +86,7 @@ netvis = function(obj = NULL,tbl = NULL,ref = NULL, title = NULL,p = 0.05){
     vis.nodes$shape  = "dot"
     vis.nodes$shadow = TRUE # Nodes will drop shadow
     vis.nodes$title  = nodes$label # Text on click
-    vis.nodes$label  = nodes$label # Node label
+    vis.nodes$label  = nodes$label # Node labelF
     vis.nodes$borderWidth = 2 # Node border width
     vis.nodes$isExprs = ifelse(vis.nodes$group,"is.Expressed","isNOT.Expressed")
 
@@ -111,8 +111,8 @@ netvis = function(obj = NULL,tbl = NULL,ref = NULL, title = NULL,p = 0.05){
     ledge = data.frame(color = colE[-1],label = c("Not significant","Significant"))
 
     visNetwork::visNetwork(vis.nodes, vis.links) %>%
-      visInteraction(hover = T,hideEdgesOnDrag = T,selectConnectedEdges = T) %>%
-      visLegend(addEdges = ledge,addNodes = lnode,useGroups = F) %>%
+      visInteraction(hover = TRUE,hideEdgesOnDrag = TRUE,selectConnectedEdges = TRUE) %>%
+      visLegend(addEdges = ledge,addNodes = lnode,useGroups = FALSE) %>%
       visExport(type="pdf",label = "save") %>% addExport()
 
   }else{
@@ -204,8 +204,8 @@ netvis = function(obj = NULL,tbl = NULL,ref = NULL, title = NULL,p = 0.05){
     ledge = data.frame(color = colE[-1],label = c("Not significant","Significant"))
 
     visNetwork::visNetwork(vis.nodes, vis.links, main = desc) %>%
-      visInteraction(hover = T,hideEdgesOnDrag = T,selectConnectedEdges = T) %>%
-      visLegend(addEdges = ledge,addNodes = lnode,useGroups = F) %>%
+      visInteraction(hover = TRUE,hideEdgesOnDrag = TRUE,selectConnectedEdges = TRUE) %>%
+      visLegend(addEdges = ledge,addNodes = lnode,useGroups = FALSE) %>%
       visExport(type="pdf",name = paste(group_id,desc,sep="_"),label = "save") %>% addExport()
   }
 

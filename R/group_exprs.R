@@ -23,10 +23,10 @@
 #' data(corum.subset)
 #' tumor = ccrcc.subset$tumor
 #' normal = ccrcc.subset$normal
-#' tumorByComplex = split.exprs(tumor,corum.subset)
-#' normalByComplex = split.exprs(normal,corum.subset)
+#' tumorByComplex = group.exprs(tumor,corum.subset)
+#' normalByComplex = group.exprs(normal,corum.subset)
 #'
-split.exprs = function(exprs,ref = NULL){
+group.exprs = function(exprs,ref = NULL){
 
   unique_id = unique(ref$group_id)
   unique_name = ref$desc[match(unique_id,ref$group_id)]

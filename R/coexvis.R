@@ -35,7 +35,6 @@
 
 coexvis = function(obj = NULL,tbl = NULL,exprs=NULL,grp = NULL,p = 0.05,title = NULL){
 
-  require(GGally)
   if(is.null(obj) & is.null(tbl)){
     stop("set one of the arguments for `obj` or `tbl`.")
   }
@@ -61,7 +60,7 @@ coexvis = function(obj = NULL,tbl = NULL,exprs=NULL,grp = NULL,p = 0.05,title = 
   var_tbl = do.call(rbind,strsplit(tbl$varname,split = "\\|"))
   cidx = match(varname,colnames(exprs))
 
-  exprs = exprs[,cidx,drop=F]
+  exprs = exprs[,cidx,drop=FALSE]
   colnames(exprs) = colnames(exprs)[cidx]
 
   df_exprs = data.frame(exprs,check.names = FALSE)
@@ -80,7 +79,7 @@ coexvis = function(obj = NULL,tbl = NULL,exprs=NULL,grp = NULL,p = 0.05,title = 
 
     ggplot(data = data, mapping = mapping) +
       geom_point(size=.5,alpha=0.5) +
-      geom_smooth(method="gam",se=T)
+      geom_smooth(method="gam",se=TRUE)
   }
 
   pairs = ggpairs(df_exprs,aes(color=grp),

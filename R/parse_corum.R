@@ -8,18 +8,14 @@
 #'   \item comp.list - list version of comp.tbl. Each list elements corresponds to a complex.
 #'   \item comp.raw - data.frame. Raw data from CORUM database "allComplexes.txt" from http://mips.helmholtz-muenchen.de/corum/#download.
 #' }
-
+#' @references Giurgiu, M. et al. (2019) CORUM: the comprehensive resource of mammalian protein complexes-2019. Nucleic Acids Res, 47(D1), D559–D563.
 #' @export
-#'
 #' @examples
 #' ref = parse.corum("Human")
 #' names(ref)
 
 parse.corum = function(organism = "Human"){
-
-  #file = system.file("extdata","allComplexes.txt",package = "RoDiCE")
-  #cplx = fread(file,data.table=FALSE)
-  load("inst/extdata/corum.raw.rda")
+  data(corum.raw)
   cplx = corum.raw
   cplx = cplx[cplx$Organism == organism,]
   cplx_gene1 = strsplit(cplx$`subunits(Gene name)`,";|,| ")
@@ -34,7 +30,6 @@ parse.corum = function(organism = "Human"){
   cplxMember1 = do.call(rbind,cplxMember1)
   cplxMember2 = do.call(rbind,cplxMember2)
   cplxMember = rbind(cplxMember1,cplxMember2)
-  #colnames(cplxMember) = c("complexID","complexName","memberGene")
   colnames(cplxMember) = c("group_id","desc","varname")
   cplxMember = cplxMember[cplxMember[,2]!="None"&cplxMember[,2]!="",]
   cplxMember = data.frame(cplxMember,check.names = FALSE,stringsAsFactors = FALSE)

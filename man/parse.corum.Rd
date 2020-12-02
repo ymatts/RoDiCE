@@ -27,3 +27,6 @@ The data is complied from CORUM The resulting output can be used for `ref` objec
 ref = parse.corum("Human")
 names(ref)
 }
+\references{
+Giurgiu, M. et al. (2019) CORUM: the comprehensive resource of mammalian protein complexes-2019. Nucleic Acids Res, 47(D1), D559–D563.
+}

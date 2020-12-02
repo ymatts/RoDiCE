@@ -3,12 +3,15 @@
 \docType{data}
 \name{corum}
 \alias{corum}
+\alias{corum.raw}
 \alias{corum.hsp}
 \alias{corum.hsp.pbaf}
 \alias{corum.subset}
 \title{Protein membership to the protein complex}
 \format{
 
+
+An object of class \code{data.frame} with 4274 rows and 20 columns.
 
 An object of class \code{data.frame} with 30422 rows and 3 columns.
 
@@ -17,9 +20,11 @@ An object of class \code{data.frame} with 27 rows and 3 columns.
 An object of class \code{data.frame} with 153 rows and 3 columns.
 }
 \source{
-\url{https://cptac-data-portal.georgetown.edu}
+\url{http://mips.helmholtz-muenchen.de/corum/}
 }
 \usage{
+corum.raw
+
 corum.hsp
 
 corum.hsp.pbaf
@@ -33,6 +38,7 @@ Protein membership information in protein complexes, based on the database CORUM
 `corum.subset` is the example data used in vignette.
 `corum.hsp` is the complex membership information of proteins restricted to "Human", and parse.corum("Human") provides the same.
 `corum.hsp.pbaf` is the membership information of the PBAF complex only.
+`corum.raw` is the raw data from CORUM.
 \itemize{
   \item group_id. The protein complex identifier provided as `complexID` from CORUM.
   \item desc. The protein complex name provided as `complexName` from CORUM.
@@ -43,8 +49,9 @@ Protein membership information in protein complexes, based on the database CORUM
 data(corum.subset)
 data(corum.hsp)
 data(corum.hsp.pbaf)
+data(corum.raw)
 }
 \references{
-Clerk DJ et al.(2019) Integrated Proteogenomic Characterization of Clear Cell Renal Cell Carcinoma.Cell;179(4),964-983 e931.
+Giurgiu, M. et al. (2019) CORUM: the comprehensive resource of mammalian protein complexes-2019. Nucleic Acids Res, 47(D1), D559–D563.
 }
 \keyword{datasets}
