@@ -32,14 +32,24 @@ knitr::include_graphics("figure1.jpg")
 
 
 ## Install
-```{r,message=FALSE,warning=FALSE,eval=FALSE}
+```{r,eval=FALSE,message=FALSE,warning=FALSE,eval=FALSE}
 install.packages("RoDiCE")
 ```
 
-```{r,message=FALSE,warning=FALSE,eval=FALSE}
-install.packages("RoDiCE")
+or 
+
+```{r,eval=FALSE,message=FALSE,warning=FALSE,eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("RoDiCE")
 ```
 
+or
+
+
+```{r,eval=FALSE,message=FALSE,warning=FALSE,eval=FALSE}
+devtools::install_github("ymatts/RoDiCE")
+```
 
 ```{r,message=FALSE,warning=FALSE}
 library(RoDiCE)
@@ -169,3 +179,11 @@ knitr::include_graphics("figure3.jpg")
 ```
 
 The lower diagonal component is a pairwise scatter plot at the original scale, and the upper diagonal component is a pairwise scatter plot at the copula-transformed (rank-transformed) scale.RoDiCE identifies the differences of robust and complex co-expressed structures by testing the copula-transformed co-expressed structures between two groups.
+
+
+## References
+Clerk DJ et al.(2019) Integrated Proteogenomic Characterization of Clear Cell Renal Cell Carcinoma.Cell;179(4),964-983 e931.
+
+Giurgiu, M. et al. (2019) CORUM: the comprehensive resource of mammalian protein complexes-2019. Nucleic Acids Res, 47(D1), D559–D563.
+
+Yusuke MATSUI et al.(2020) RoDiCE: Robust differential protein co-expression analysis for cancer complexome (submitted).
