@@ -12,6 +12,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: Rcpp (>= 1.0.4.6),RcppParallel,gPdtest,stats,Rfast,ggplot2,visNetwork,GGally
 LinkingTo: Rcpp,RcppParallel
-Suggests: knitr,data.table,readxl
+Suggests: knitr,data.table,readxl,testthat (>= 3.0.0)
+Config/testthat/edition: 3
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1

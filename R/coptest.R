@@ -8,7 +8,7 @@
 #' @return List of three components:
 #' \itemize{
 #'   \item pval - p-value
-#'   \item stat - test statistics based on Cramér–von Mises test statistic
+#'   \item stat - test statistics based on Cramer-von Mises test statistic
 #'   \item null - null distribution from randomization procedure
 #' }
 #'
@@ -30,40 +30,26 @@
 #'
 #'Clerk DJ et al.(2019) Integrated Proteogenomic Characterization of Clear Cell Renal Cell Carcinoma.Cell;179(4),964-983 e931.
 #'}
-coptest = function(x1,x2,nperm=100,approx = TRUE){
+coptest <- function(x1, x2, nperm = 100, approx = TRUE) {
+  # Validate input
+  validate_matrix_input(x1, x2, require_colnames = FALSE)
 
-  result = rcpp_coptest(mat1 = x1,mat2 = x2,nperm = nperm)
-  pval = result$pval
-  stat = result$stat
-  null = result$null_stat
+  # Validate nperm
+  if (!is.numeric(nperm) || nperm < 1) {
+    stop("nperm must be a positive integer.", call. = FALSE)
+  }
+  nperm <- as.integer(nperm)
 
-  if(approx){
-    if(sum(null >= stat) <= 10){
+  # Run C++ copula test
+  result <- rcpp_coptest(mat1 = x1, mat2 = x2, nperm = nperm)
+  pval <- result$pval
+  stat <- result$stat
+  null <- result$null_stat
 
-      p = 0.8
-      q = quantile(null,probs = p)
-      d0 = null[null >= q]
-      d1 = d0 - q
-      gpd_test = gPdtest::gpd.test(d1,J = 1000)
-
-      while(gpd_test$p.values[2,1] <= 0.05 & p <= 1){
-        p = p + 0.01
-        q = quantile(null,probs = p)
-        d0 = null[null >= q]
-        d1 = d0 - q
-        gpd_test = gPdtest::gpd.test(d1)
-      }
-
-      gpd_fit = gPdtest::gpd.fit(d1,method = "amle")
-      k = gpd_fit[1,1]
-      a = gpd_fit[2,1]
-      f = 1 - (1 + k * (stat - q) / a)^(-1 / k)
-      #f = 1 - (1 - k * d1 / a)^(1 / k)
-      pval = (1 - f)*length(d0)/length(null)
-      names(pval) = NULL
-    }
+  # Apply GPD approximation for extreme p-values if requested
+  if (approx && sum(null >= stat) <= 10) {
+    pval <- gpd_pval_approx(stat, null)
   }
 
-  list(pval=pval,stat=stat,null=null)
+  list(pval = pval, stat = stat, null = null)
 }
-
