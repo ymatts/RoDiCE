@@ -38,10 +38,10 @@ test_that("coptest.p validates column names", {
   x2 <- matrix(rnorm(40 * 3), nrow = 40, ncol = 3)
 
   # No column names
-  expect_error(coptest.p(x1, x2), "column names are null")
+  expect_error(coptest.p(x1, x2), "Column names are required but missing")
 
   # Different column names
   colnames(x1) <- c("A", "B", "C")
   colnames(x2) <- c("X", "Y", "Z")
-  expect_error(coptest.p(x1, x2), "column names are diffrent")
+  expect_error(coptest.p(x1, x2), "Column names must match between x1 and x2")
 })
